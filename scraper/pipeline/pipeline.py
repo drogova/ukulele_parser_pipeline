@@ -154,7 +154,7 @@ class MongoWriterPipeline(WriterPipeline):
         Open database connection and create table
         :return:
         """
-        self.client = MongoClient('mongodb://702a6083e649:27017/')
+        self.client = MongoClient('mongodb://localhost:27018/')
         self.db = self.client.products
         print(self.client.admin.command('ping'))
 
