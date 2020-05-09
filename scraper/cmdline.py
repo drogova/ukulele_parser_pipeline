@@ -1,7 +1,7 @@
 import argparse
 from typing import NoReturn
 from scraper.commands import crawl
-from scraper.engine import FORMAT_CSV, FORMAT_JL, FORMAT_POSTGRES, SIGN_STDOUT
+from scraper.engine import FORMAT_CSV, FORMAT_JL, FORMAT_POSTGRES, FORMAT_MONGO, SIGN_STDOUT
 
 
 def parse() -> NoReturn:
@@ -13,7 +13,7 @@ def parse() -> NoReturn:
 
     parser_crawl = subparsers.add_parser('crawl')
     parser_crawl.add_argument('-o', '--outfile', metavar='FILE', default=SIGN_STDOUT)
-    parser_crawl.add_argument('-f', '--format', default=FORMAT_CSV, choices=[FORMAT_CSV, FORMAT_JL, FORMAT_POSTGRES])
+    parser_crawl.add_argument('-f', '--format', default=FORMAT_CSV, choices=[FORMAT_CSV, FORMAT_JL, FORMAT_POSTGRES, FORMAT_MONGO])
     parser_crawl.set_defaults(func=crawl.execute)
 
     args = parser.parse_args()

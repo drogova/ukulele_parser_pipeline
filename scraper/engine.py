@@ -1,12 +1,13 @@
 from collections import deque
 from requests_html import HTMLSession
 from typing import Callable, NoReturn
-from scraper.pipeline.pipeline import CSVWriterPipeline, JSONWriterPipeline, PostgresWriterPipeline
+from scraper.pipeline.pipeline import CSVWriterPipeline, JSONWriterPipeline, PostgresWriterPipeline, MongoWriterPipeline
 
 SIGN_STDOUT = '-'
 FORMAT_CSV = 'csv'
 FORMAT_JL = 'jl'
 FORMAT_POSTGRES = 'postgres'
+FORMAT_MONGO = 'mongo'
 
 
 def start(start_url: str, callback: Callable, out_path: str, out_format: str) -> NoReturn:
@@ -26,6 +27,8 @@ def start(start_url: str, callback: Callable, out_path: str, out_format: str) ->
         pipeline = JSONWriterPipeline(out_path, SIGN_STDOUT)
     elif out_format == FORMAT_POSTGRES:
         pipeline = PostgresWriterPipeline()
+    elif out_format == FORMAT_MONGO:
+        pipeline = MongoWriterPipeline()
     else:
         raise NotImplementedError('The output format is not implemented.')
 

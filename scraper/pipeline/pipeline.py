@@ -3,6 +3,7 @@ import csv
 import json
 import psycopg2
 from psycopg2.extras import execute_values
+from pymongo import MongoClient, errors
 from abc import ABC, abstractmethod
 from typing import Callable, NoReturn, Dict, IO
 
@@ -144,3 +145,31 @@ class PostgresWriterPipeline(WriterPipeline):
         :return:
         """
         self.connection.close()
+
+
+class MongoWriterPipeline(WriterPipeline):
+
+    def open_spider(self) -> NoReturn:
+        """
+        Open database connection and create table
+        :return:
+        """
+        self.client = MongoClient('mongodb://702a6083e649:27017/')
+        self.db = self.client.products
+        print(self.client.admin.command('ping'))
+
+    def process_item(self, item: Dict[str, str]) -> NoReturn:
+        """
+        Process item and write it to database
+        :param item:
+        :return:
+        """
+        self.db.product.insert_many([item])
+
+    def close_spider(self) -> NoReturn:
+        """
+        Close database connection
+        :return:
+        """
+        self.client.close()
+
